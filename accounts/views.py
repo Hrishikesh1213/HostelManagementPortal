@@ -20,7 +20,7 @@ def register(request):
         email = request.POST['email']  
         password = request.POST['password']
 
-        if Student.objects.filter(email='email').exists():
+        if Student.objects.filter(email=email).exists():
             HttpResponseRedirect('accounts/registerStudent.html',{
                 'error': 'you already have the account, kindly proceed to Login page'
             })
@@ -29,7 +29,6 @@ def register(request):
             student.save()
             return HttpResponseRedirect('accounts/login.html')
 
-        return render(request, 'studentLogin.html')
 
 def login(request):
     if request.method == 'GET':
@@ -40,5 +39,15 @@ def login(request):
 
         email = request.POST['email']  
         password = request.POST['password']
+
+        if Student.objects.filter(email=email, password=password).exists():
+            stu = Student.objects.filter(email=email, password=password).values()
+            return HttpResponseRedirect('ComplaintPortal/welcome.html',{
+                'student': stu
+            })
+        else:
+            HttpResponseRedirect('accounts/registerStudent.html',{
+                'error': 'you already have the account, kindly proceed to Login page'
+            })
 
         return render(request, 'studentLogin.html')

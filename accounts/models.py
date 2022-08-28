@@ -22,12 +22,4 @@ class Officer(models.Model):
     hostel = models.CharField(max_length=20)  
     email = models.EmailField(max_length=50)  
     password = models.CharField(max_length=50)  
-
-
-class Complaint(models.Model):
-    cid = models.CharField(max_length=30)   
-    typeOfIssue = models.CharField(max_length=30)  
-    description = models.CharField(max_length=100)  
-    avail_start = models.DateTimeField()
-    avail_end = models.DateTimeField()
-    status = models.CharField(max_length=10) 
+    active = models.BooleanField(default=False)
