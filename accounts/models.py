@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Student(models.Model):
-    sid = models.CharField(max_length=9)  
+    sid = models.CharField(primary_key=True, max_length=9)  
     name = models.CharField(max_length=30)  
     phnNum = models.CharField(max_length=10)  
     room = models.IntegerField() 
@@ -13,7 +13,7 @@ class Student(models.Model):
     password = models.CharField(max_length=50)  
 
 class Officer(models.Model):
-    empid = models.CharField(max_length=9)  
+    empid = models.CharField(primary_key=True, max_length=9)  
     name = models.CharField(max_length=30)  
     phnnum = models.CharField(max_length=10)  
     rank = models.IntegerField() 

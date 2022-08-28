@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from ComplaintPortal.models import Student
+from accounts.models import Student,Officer
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core import serializers
+
 
 # Create your views here.
 
@@ -41,13 +43,55 @@ def login(request):
         password = request.POST['password']
 
         if Student.objects.filter(email=email, password=password).exists():
-            stu = Student.objects.filter(email=email, password=password).values()
+            student = Student.objects.filter(email=email, password=password).values()
+            # student_json = serializers.serialize('json', student)
+            student_json = list(student)
+            print("---------------------------------------------------------------------------------------------------------")
+            print(student_json)
+            print("---------------------------------------------------------------------------------------------------------")
+            request.session['student'] = student_json
             return HttpResponseRedirect('ComplaintPortal/welcome.html',{
-                'student': stu
+                'student': student_json
             })
         else:
-            HttpResponseRedirect('accounts/registerStudent.html',{
-                'error': 'you already have the account, kindly proceed to Login page'
+            HttpResponseRedirect('accounts/loginStudent.html',{
+                'error': 'Kindly check your credentials'
             })
 
-        return render(request, 'studentLogin.html')
+        # return render(request, 'studentLogin.html')
+
+def myprofile(request):
+    if request.method == 'GET':
+        student = request.session['student'] 
+        email =  student['email']
+        password = student['password']    
+
+        stu = Student.objects.filter(email=email, password=password).values()
+        student_json = serializers.serialize('json', stu)
+        return render(request, 'myprofile.html', student_json)
+
+def editprofile(request):
+    if request.method == 'GET':
+        student = request.session['student'] 
+        email =  student['email']
+        password = student['password']    
+
+        stu = Student.objects.filter(email=email, password=password).values()
+        student_json = serializers.serialize('json', stu)        
+        return render(request, 'editprofile.html', student_json)
+        
+    elif request.method == 'PUT':
+
+        sid = request.PUT['sid']
+        name = request.PUT['name']
+        phnNum = request.PUT['phnNum'] 
+        room = int(request.PUT['room'])
+        wing = request.PUT['wing']
+        hostel = request.PUT['hostel']
+        email = request.PUT['email']  
+        password = request.PUT['password']
+
+        student = Student(sid=sid, name=name, phnNum=phnNum, room=room, wing=wing, hostel=hostel, email=email, password=password)
+        student.save()
+        return HttpResponseRedirect('accounts/myprofile.html')
+

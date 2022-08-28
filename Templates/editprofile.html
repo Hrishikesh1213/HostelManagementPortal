@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Profile</title>
+  </head>
+  <body>
+    <h1>{{error}}<h1>
+        <form action="editprofile" method="PUT">
+            {% csrf_token %}
+            <label>rollNumber:</label>
+                <input type="text" name="rollNumber" value="{{student.sid}}"><br>
+            <label>Name:</label>
+                <input type="text" name="Name" value="{{student.name}}"><br>
+            <label>phoneNumber:</label>
+                <input type="text" name="PhnNum" value="{{student.PhnNum}}"><br>
+            <label>room:</label>
+                <input type="text" name="room" value="{{student.room}}"><br>
+            <label>wing:</label>
+                <input type="text" name="wing" value="{{student.wing}}"><br>
+            <label>hostel:</label>
+                <input type="text" name="hostel" value="{{student.hostel}}"><br>
+            <label>email:</label>
+                <input type="email" name="email" value="{{student.email}}"><br>
+            <label>password:</label>
+                <input type="password" name="password" value="{{student.password}}"><br>
+            <input type="submit" name="submit">
+   </form>
+  </body>
+</html>
